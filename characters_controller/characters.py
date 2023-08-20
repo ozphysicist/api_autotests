@@ -5,6 +5,9 @@ from requests.auth import HTTPBasicAuth
 
 
 class CharactersController:
+    """
+
+    """
     def __init__(
             self,
             *,

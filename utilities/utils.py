@@ -4,7 +4,7 @@ import random
 from typing import Any, Optional
 
 from characters_controller.characters import CharactersController
-from characters_controller.dataclass import Character
+from characters_controller.dataclass import Character, CharacterWithoutName, CharacterWrongTypeModel
 
 from asserts import assert_equal, assert_in
 from pydantic import ValidationError
@@ -23,7 +23,12 @@ def validate_characters_list_data(data: Any) -> str:
 
 
 def get_exist_random_character_name(controller: CharactersController, type_name: Optional[str] = None) -> str:
-    """Метод, возвращающий случайное имя существующего героя"""
+    """
+    Метод, возвращающий случайное имя существующего героя.
+    Исходим из того, что в таблице БД сервиса всегда есть записи о персонажах.
+    Если бы таблица была пустой, то мы бы сначала добавляли персонажа, потом искали запись о не в БД,
+    а после удаляли эту запись (в этом случае было бы реализовано с использованием фикстуры).
+    """
     characters_list = controller.characters_get().json()['result']
     random.shuffle(characters_list)
     name = random.choice(characters_list)['name']
@@ -68,13 +73,13 @@ def get_random_float(before_dot: int = 1, after_dot: int = 2) -> float:
 
 
 def create_new_character_data_with_required_field(
-        education: Any,
-        height: Any,
-        identity: Any,
-        name: Any,
-        other_aliases: Any,
-        universe: Any,
-        weight: Any,
+        education: str,
+        height: float,
+        identity: str,
+        name: str,
+        other_aliases: str,
+        universe: str,
+        weight: float,
 ) -> Character:
     data = Character(
         education=education,
@@ -89,17 +94,38 @@ def create_new_character_data_with_required_field(
 
 
 def create_new_character_data_without_required_field(
-        education: Any,
-        height: Any,
-        identity: Any,
-        other_aliases: Any,
-        universe: Any,
-        weight: Any,
-) -> Character:
-    data = Character(
+        education: str,
+        height: float,
+        identity: str,
+        other_aliases: str,
+        universe: str,
+        weight: float,
+) -> CharacterWithoutName:
+    data = CharacterWithoutName(
         education=education,
         height=height,
         identity=identity,
+        other_aliases=other_aliases,
+        universe=universe,
+        weight=weight,
+    )
+    return data
+
+
+def create_new_character_data_with_wrong_data_type(
+        education: int,
+        height: float,
+        identity: int,
+        name: str,
+        other_aliases: int,
+        universe: int,
+        weight: float,
+) -> CharacterWrongTypeModel:
+    data = CharacterWrongTypeModel(
+        education=education,
+        height=height,
+        identity=identity,
+        name=name,
         other_aliases=other_aliases,
         universe=universe,
         weight=weight,
