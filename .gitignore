@@ -9,9 +9,9 @@ venv3.8
 test_log.log
 results
 *.ipynb
-src/allure/*
-src/envars/*
-!src/envars/.gitkeep
+vars/allure/*
+vars/envars/*
+!vars/envars/.gitkeep
 *_report.json
 data/risk_parameter/risks.json
 data/corp_events/corp_events.json

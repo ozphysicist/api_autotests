@@ -10,4 +10,3 @@ class ErrorMessages(Enum):
     NOT_A_VALID_STRING = 'Not a valid string.'
     FIELD_MAX_LENGTH = 'Length must be between 1 and 350.'
     MORE_THAN_500_ITEMS = "Collection can't contain more than 500 items"
-

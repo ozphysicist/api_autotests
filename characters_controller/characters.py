@@ -1,43 +1,52 @@
 from typing import Dict
 
-import requests
+import requests as r
 from requests.auth import HTTPBasicAuth
 
 
-class Characters:
-    def __init__(self) -> None:
-        self.host = 'http://rest.test.ivi.ru/v2'
-        self.user_password = 'APZrVp83vFNk5F'
-        self.user_login = 'zhdanova.o.v@ya.ru'
-        self.auth = HTTPBasicAuth('zhdanova.o.v@ya.ru', 'APZrVp83vFNk5F')
+class CharactersController:
+    def __init__(
+            self,
+            *,
+            base_url: str,
+            user_login: str,
+            user_password: str,
+    ) -> None:
 
-    def characters_get(self, authorization: bool = True) -> requests.Response:
-        url = f'{self.host}/characters'
+        self.url = base_url
+        self.password = user_password
+        self.login = user_login
 
-        response = requests.get(url=url, auth=self.auth)
-        return response
+    def characters_get(self, auth: bool = True) -> r.Response:
+        url = f'{self.url}/characters'
+        res = r.get(url=url, auth=HTTPBasicAuth(self.login, self.password)) if auth else r.get(url=url)
+        return res
 
-    def character_get(self, name: str) -> requests.Response:
-        url = f'{self.host}/character?name={name}'
-        response = requests.get(url=url, auth=self.auth)
-        return response
+    def character_get(self, name: str, auth: bool = True) -> r.Response:
+        url = f'{self.url}/character?name={name}'
+        res = r.get(url=url, auth=HTTPBasicAuth(self.login, self.password)) if auth else r.get(url=url)
+        return res
 
-    def character_post(self, character: Dict) -> requests.Response:
-        url = f'{self.host}/character'
-        response = requests.post(url=url, auth=self.auth, json=character)
-        return response
+    def character_post(self, character: Dict, auth: bool = True) -> r.Response:
+        url = f'{self.url}/character'
+        res = r.post(
+            url=url,
+            auth=HTTPBasicAuth(self.login, self.password),
+            json=character,
+        ) if auth else r.post(url=url)
+        return res
 
-    def character_put(self, character: Dict) -> requests.Response:
-        url = f'{self.host}/character'
-        response = requests.put(url=url, auth=self.auth, json=character)
-        return response
+    def character_put(self, character: Dict, auth: bool = True) -> r.Response:
+        url = f'{self.url}/character'
+        res = r.put(url=url, auth=HTTPBasicAuth(self.login, self.password), json=character) if auth else r.put(url=url)
+        return res
 
-    def character_delete(self, name: str) -> requests.Response:
-        url = f'{self.host}/character?name={name}'
-        response = requests.delete(url=url, auth=self.auth)
-        return response
+    def character_delete(self, name: str, auth: bool = True) -> r.Response:
+        url = f'{self.url}/character?name={name}'
+        res = r.delete(url=url, auth=HTTPBasicAuth(self.login, self.password)) if auth else r.delete(url=url)
+        return res
 
-    def reset(self) -> requests.Response:
-        url = f'{self.host}/reset'
-        response = requests.post(url=url, auth=self.auth)
-        return response
+    def reset_post(self, auth: bool = True) -> r.Response:
+        url = f'{self.url}/reset/'
+        res = r.post(url=url, auth=HTTPBasicAuth(self.login, self.password)) if auth else r.post(url=url)
+        return res

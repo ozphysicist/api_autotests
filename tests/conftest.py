@@ -1,9 +1,14 @@
 import pytest
 
-from characters_controller.characters import Characters
+from characters_controller.characters import CharactersController
+from vars import envars
 
 
 @pytest.fixture()
-def characters() -> Characters:
+def characters() -> CharactersController:
     """Фикстура, вызывающая экземпляр класса Characters"""
-    return Characters()
+    return CharactersController(
+        base_url=envars.SERVICE_BASE_URL,
+        user_login=envars.SERVICE_LOGIN,
+        user_password=envars.SERVICE_PASSWORD,
+    )
