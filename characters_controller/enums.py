@@ -14,7 +14,10 @@ class ErrorMessages(Enum):
 
 
 class ServiceDBLimits(Enum):
-    """Ограничения БД (Возможно их больше, гругих не нашла. В задании информации о них нет)"""
+    """
+    Ограничения БД (Возможно их больше, других не нашла.
+    В задании информации о них нет)
+    """
     STRING_FIELD_DATA_LIMIT = 350
     MAX_DB_RECORDS = 500
     DEFAULT_DB_RECORD = 302

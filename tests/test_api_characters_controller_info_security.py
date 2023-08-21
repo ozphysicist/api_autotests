@@ -1,3 +1,5 @@
+from asserts import assert_equal, assert_in
+
 from characters_controller.characters import CharactersController
 from characters_controller.enums import ErrorMessages
 from utilities.utils import (
@@ -6,12 +8,12 @@ from utilities.utils import (
     get_random_string_with_letters_digits,
 )
 
-from asserts import assert_equal, assert_in
 
-
-def test_get_characters_status_without_authorization(characters: CharactersController) -> None:
+def test_get_characters_status_without_authorization(
+        characters: CharactersController,
+) -> None:
     """
-    Тест на получение списка персонажей без авторизации.
+    Получение списка персонажей. Пользователь НЕ авторизован.
     Проверка корректности возращаемого статус кода и сообщения об ошибке
     """
     response = characters.characters_get(auth=False)
@@ -23,13 +25,17 @@ def test_get_characters_status_without_authorization(characters: CharactersContr
     assert_in(
         ErrorMessages.UNAUTHORIZED.value,
         response.text,
-        'Фактическое описание описание ошибки {second} не содержит ожидаемую информацию {first}'
+        'Фактическое описание описание ошибки {second} '
+        'не содержит ожидаемую информацию {first}',
     )
 
 
-def test_get_character_by_name_without_authorization(characters: CharactersController, character_name: str) -> None:
+def test_get_character_by_name_without_authorization(
+        characters: CharactersController,
+        character_name: str,
+) -> None:
     """
-    Тест на получение существующего персонажа по имени без авторизации.
+    ППолучение данных по существующему персонажу. Пользователь НЕ авторизован.
     Проверка корректности возращаемого статус кода и сообщения об ошибке
     """
     name = character_name
@@ -42,14 +48,18 @@ def test_get_character_by_name_without_authorization(characters: CharactersContr
     assert_in(
         ErrorMessages.UNAUTHORIZED.value,
         response.text,
-        'Фактическое описание описание ошибки {second} не содержит ожидаемую информацию {first}'
+        'Фактическое описание описание ошибки {second} '
+        'не содержит ожидаемую информацию {first}',
     )
 
 
-def test_create_new_character_without_authorization(characters: CharactersController) -> None:
+def test_create_new_character_without_authorization(
+        characters: CharactersController,
+) -> None:
     """
-    Тест на создание нового персонажа без авторизации.
-    Проверка корректности возращаемого статус кода и сообщения об ошибке
+    Добавление персонажа, которого имя которого еще нет на сервере.
+    Пользователь НЕ авторизован.
+    Проверка корректности возращаемого статус кода и сообщения об ошибке.
     """
     data = create_new_character_data_with_required_field(
         education=get_random_string_with_letters_digits(10),
@@ -69,13 +79,18 @@ def test_create_new_character_without_authorization(characters: CharactersContro
     assert_in(
         ErrorMessages.UNAUTHORIZED.value,
         response.text,
-        'Фактическое описание описание ошибки {second} не содержит ожидаемую информацию {first}'
+        'Фактическое описание описание ошибки {second} '
+        'не содержит ожидаемую информацию {first}',
     )
 
 
-def test_update_new_character_without_authorization(characters: CharactersController, character_name: str) -> None:
+def test_update_new_character_without_authorization(
+        characters: CharactersController,
+        character_name: str
+) -> None:
     """
-    Тест на обновление двнных существующего персонажа без авторизации.
+    Внесение изменений в данные о персонаже. Персонаж  существует.
+    Пользователь НЕ авторизован.
     Проверка корректности возращаемого статус кода и сообщения об ошибке
     """
     data = create_new_character_data_with_required_field(
@@ -96,13 +111,17 @@ def test_update_new_character_without_authorization(characters: CharactersContro
     assert_in(
         ErrorMessages.UNAUTHORIZED.value,
         response.text,
-        'Фактическое описание описание ошибки {second} не содержит ожидаемую информацию {first}'
+        'Фактическое описание описание ошибки {second} '
+        'не содержит ожидаемую информацию {first}',
     )
 
 
-def test_delete_new_character_without_authorization(characters: CharactersController, character_name: str) -> None:
+def test_delete_new_character_without_authorization(
+        characters: CharactersController,
+        character_name: str,
+) -> None:
     """
-    Тест на удаление записи о существующем персонаже без авторизации.
+    Удаление существующего персонажа. Пользователь НЕ авторизован.
     Проверка корректности возращаемого статус кода и сообщения об ошибке
     """
     name = character_name
@@ -115,13 +134,16 @@ def test_delete_new_character_without_authorization(characters: CharactersContro
     assert_in(
         ErrorMessages.UNAUTHORIZED.value,
         response.text,
-        'Фактическое описание описание ошибки {second} не содержит ожидаемую информацию {first}'
+        'Фактическое описание описание ошибки {second} '
+        'не содержит ожидаемую информацию {first}',
     )
 
 
-def test_reset_characters_without_authorization(characters: CharactersController) -> None:
+def test_reset_characters_without_authorization(
+        characters: CharactersController
+) -> None:
     """
-    Тест на сброс коллекции в первоначальное состояние без авторизации.
+    Сброс коллекции в первоначальное состояние. Пользователь НЕ авторизован..
     Проверка корректности возращаемого статус кода и сообщения об ошибке
     """
     response = characters.reset_post(auth=False)
@@ -133,5 +155,6 @@ def test_reset_characters_without_authorization(characters: CharactersController
     assert_in(
         ErrorMessages.UNAUTHORIZED.value,
         response.text,
-        'Фактическое описание описание ошибки {second} не содержит ожидаемую информацию {first}'
+        'Фактическое описание описание ошибки '
+        '{second} не содержит ожидаемую информацию {first}',
     )

@@ -1,3 +1,5 @@
+import pytest
+
 from characters_controller.characters import CharactersController
 from characters_controller.enums import ServiceDBLimits
 from utilities.utils import (
@@ -5,9 +7,8 @@ from utilities.utils import (
     get_random_float,
     get_random_string_with_letters_digits,
 )
-from vars import envars
 
-import pytest
+from vars import envars
 
 
 @pytest.fixture()
@@ -23,11 +24,14 @@ def characters() -> CharactersController:
 @pytest.fixture()
 def fill_db_to_max_recs(characters: CharactersController) -> None:
     """
-    Фикстура, заполняющая БД до максимального количества записей или максимального - 1 запись.
+    Фикстура, заполняющая БД до максимального количества записей
+    или максимального - 1 запись.
     :param: rec_count: количество записей, до которого нужно заполнить БД
     :return: None
     """
-    empty_db_rec_counts = ServiceDBLimits.MAX_DB_RECORDS.value - len(characters.characters_get().json()['result'])
+    db_limits = ServiceDBLimits.MAX_DB_RECORDS.value
+    current_recs = len(characters.characters_get().json()['result'])
+    empty_db_rec_counts = db_limits - current_recs
     for record in range(empty_db_rec_counts):
         data = create_new_character_data_with_required_field(
             education=get_random_string_with_letters_digits(10),
@@ -47,6 +51,10 @@ def fill_db_to_max_recs(characters: CharactersController) -> None:
 
 @pytest.fixture()
 def character_name(characters: CharactersController) -> str:
+    """
+    Фикстура, создающая персонажа в БД.
+    После теста БД сбрасывается до дефолтного состояния.
+    """
     data = create_new_character_data_with_required_field(
         education=get_random_string_with_letters_digits(10),
         height=get_random_float(),

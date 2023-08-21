@@ -6,7 +6,8 @@ from pydantic import BaseModel
 class Character(BaseModel):
     """
     Модель описывающая представление одного персонажа.
-    В данной модели обязательным является только поле name, остальные поля - опциональны
+    В данной модели обязательным является только поле name,
+    остальные поля - опциональны.
     """
     education: Optional[str] = None
     height: Optional[Any] = None
@@ -19,7 +20,8 @@ class Character(BaseModel):
 
 class CharacterWithoutName(BaseModel):
     """
-    Модель описывающая представление одного персонажа, в которой отсутсвует обязательное поле name.
+    Модель описывающая представление одного персонажа,
+    в которой отсутствует обязательное поле name.
     Остальные поля - опциональны.
     """
     education: Optional[str] = None
@@ -32,8 +34,8 @@ class CharacterWithoutName(BaseModel):
 
 class CharacterWrongTypeModel(BaseModel):
     """
-    Модель описывающая представление одного персонажа, в которой отсутсвует обязательное поле name.
-    Остальные поля - опциональны.
+    Модель описывающая представление одного персонажа,
+    типы данных неверны.
     """
     education: Optional[int] = None
     height: Optional[float] = None
